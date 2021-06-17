@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4339753143576865775}
   - component: {fileID: 3334145033992079654}
   - component: {fileID: 133747812048206637}
+  - component: {fileID: 2613776647325528472}
   - component: {fileID: 6036582450128981469}
   - component: {fileID: 5359858553517397333}
   - component: {fileID: 1833989035034883069}
-  - component: {fileID: 2613776647325528472}
   - component: {fileID: 99142612032551383}
   m_Layer: 0
   m_Name: Arrow
@@ -87,6 +87,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2613776647325528472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913218713436622382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543d60e740913fb49ad60923532793fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodEffectPrefab: {fileID: 5162050264282909369, guid: 1cca6a40ddef2034abd166da8db2e5b1, type: 3}
 --- !u!65 &6036582450128981469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -242,18 +255,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &2613776647325528472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913218713436622382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 543d60e740913fb49ad60923532793fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &99142612032551383
 AudioSource:
   m_ObjectHideFlags: 0

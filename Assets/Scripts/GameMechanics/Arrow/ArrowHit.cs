@@ -9,6 +9,9 @@ public class ArrowHit : MonoBehaviour
     Rigidbody rb;
     AudioSource audioSource;
 
+    [SerializeField]
+    private ParticleSystem bloodEffectPrefab;
+
     bool hit = false;
 
     private void Start()
@@ -48,7 +51,8 @@ public class ArrowHit : MonoBehaviour
         #region Zombie Death 
         if (other.gameObject.tag == "Zombie")
         {
-            
+            var bloodEffect = Instantiate(bloodEffectPrefab,transform.position,Quaternion.Euler(0, other.gameObject.transform.eulerAngles.y, 0), transform.parent = other.gameObject.transform);
+            bloodEffect.Play();
             GameObject enemy = other.gameObject.transform.parent.gameObject;
             bodyColliders = enemy.GetComponentInChildren<ZombieCombat>().bodyColliders;
 

@@ -2459,6 +2459,9 @@ MonoBehaviour:
   cameraObject: {fileID: 0}
   arrowPosition: {fileID: 1643810167096657589}
   arrowSpeed: 30
+  clips:
+  - {fileID: 8300000, guid: 57e0544cf880c14499cec454c3481d3b, type: 3}
+  - {fileID: 8300000, guid: 1d3452b81d4a2b649a0a6d85f36012d7, type: 3}
 --- !u!114 &6056655297184580990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2500,10 +2503,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.58886874
   m_Height: 1.8274958
   m_Direction: 1
-  m_Center: {x: -1.2928366e-15, y: 0.89, z: -1.0014983e-22}
+  m_Center: {x: 0, y: 0.89, z: 0.08886874}
 --- !u!82 &3425954731725722131
 AudioSource:
   m_ObjectHideFlags: 0

@@ -17,11 +17,14 @@ public class PlayerCombat : MonoBehaviour
     GameObject arrow;
     [SerializeField]
     private float arrowSpeed;
+    [SerializeField]
+    private AudioClip[] clips;
 
     Animator animatorCharacter;
     SplineFollower follower;
     Rigidbody rb;
     AudioSource audioSource;
+    
 
     private bool aimandShoot = false, arrowHit = false,shootComplete=true;
     private int arrowCount = 1;
@@ -51,6 +54,8 @@ public class PlayerCombat : MonoBehaviour
     #region Arrow
     void CreateArrow() // Called in character animation events.
     {
+        audioSource.clip = clips[0];
+        audioSource.Play();
         arrow = Instantiate(arrowPrefab, arrowPosition.transform.position, arrowPosition.transform.rotation);
         arrow.transform.name = "Arrow " + arrowCount;
         arrowCount++;
@@ -74,6 +79,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (other.gameObject.tag == "Zombie" || other.gameObject.tag == "ZombieArm" || other.gameObject.tag == "Obstacle")
         {
+            audioSource.clip = clips[1];
             audioSource.Play();
             animatorCharacter.SetBool("CharacterDeath", true);
             transform.GetComponentInParent<SplineFollower>().enabled = false;
