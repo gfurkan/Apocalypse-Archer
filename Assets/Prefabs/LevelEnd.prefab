@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 550779447991045227}
   m_Layer: 0
   m_Name: LevelEnd
-  m_TagString: Untagged
+  m_TagString: LevelEnd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,3 +57,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3486687bc1972a8498c55a4b12435770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
+  cameraPosLeft: {fileID: 0}
+  cameraPosRight: {fileID: 0}

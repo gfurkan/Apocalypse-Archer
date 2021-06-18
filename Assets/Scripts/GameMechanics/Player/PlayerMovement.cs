@@ -33,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(transform.localPosition.x);
         MovePlayer();
 
         if (_moveLeft)

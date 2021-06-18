@@ -6,6 +6,8 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
     private GameObject character;
+    [SerializeField]
+    private float cameraRotationSpeed = 0;
 
     Vector3 distance;
 
@@ -17,6 +19,7 @@ public class CameraMovement : MonoBehaviour
     void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, character.transform.position + distance, 0.5f);
-        transform.eulerAngles = character.transform.eulerAngles;
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles,character.transform.eulerAngles,1* Time.deltaTime*cameraRotationSpeed);
+       // transform.eulerAngles = character.transform.eulerAngles;
     }
 }

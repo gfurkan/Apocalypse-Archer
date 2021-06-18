@@ -2,32 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Dreamteck.Splines;
+using UnityEngine.UI;
+using DG.Tweening;
+
 public class LevelEndControl : MonoBehaviour
 {
     [SerializeField]
     private PlayerMovement playerMovement;
     [SerializeField]
-    private GameObject cameraPosLeft,cameraPosRight;
+    private GameObject cameraPosLeft,cameraPosRight,camera;
 
-    GameObject camera;
+    GameObject nextLevel;
     Animator animator;
 
-    bool changeCameraPos = false;
-
+    private bool changeCameraPos = false;
+    private bool _levelEnded = false;
+    public bool levelEnded
+    {
+        get
+        {
+            return _levelEnded;
+        }
+        set
+        {
+            _levelEnded = value;
+        }
+    }
     private void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("Camera");
+        
     }
     private void LateUpdate()
     {
         if (changeCameraPos)
             CameraPosition();
     }
+    private void Update()
+    {
+        StartCoroutine(nextLevelButton());
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            
+            nextLevel = GameObject.FindGameObjectWithTag("NextLevelButton");
+            _levelEnded = true;
             Destroy(other.GetComponent<PlayerCombat>());
             Destroy(other.GetComponent<PlayerMovement>());
             Destroy(camera.GetComponent<CameraMovement>());
@@ -51,6 +70,7 @@ public class LevelEndControl : MonoBehaviour
         
         if (playerMovement.moveLeft)
         {
+            
             camera.transform.position = Vector3.Lerp(camera.transform.position, cameraPosLeft.transform.position, 0.25f * Time.deltaTime);
             camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, cameraPosLeft.transform.rotation, 0.25f * Time.deltaTime);
         }
@@ -58,6 +78,18 @@ public class LevelEndControl : MonoBehaviour
         {
             camera.transform.position = Vector3.Lerp(camera.transform.position, cameraPosRight.transform.position, 0.25f * Time.deltaTime);
             camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, cameraPosRight.transform.rotation, 0.25f * Time.deltaTime);
+        }
+    }
+    IEnumerator nextLevelButton()
+    {
+        if (_levelEnded)
+        {
+            yield return new WaitForSeconds(2f);
+            nextLevel.GetComponent<CanvasGroup>().alpha += Time.deltaTime * 2;
+            if (nextLevel.GetComponent<CanvasGroup>().alpha >= 0.5f)
+            {
+                nextLevel.GetComponent<Button>().interactable = true;
+            }
         }
     }
 }
