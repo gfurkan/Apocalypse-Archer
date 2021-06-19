@@ -16,6 +16,7 @@ TagManager:
   - Bow
   - ReplayButton
   - NextLevelButton
+  - ZombieWarrior
   layers:
   - Default
   - TransparentFX

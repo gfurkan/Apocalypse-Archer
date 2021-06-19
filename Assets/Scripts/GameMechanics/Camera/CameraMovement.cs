@@ -20,6 +20,5 @@ public class CameraMovement : MonoBehaviour
     {
         transform.position = Vector3.Lerp(transform.position, character.transform.position + distance, 0.5f);
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles,character.transform.eulerAngles,1* Time.deltaTime*cameraRotationSpeed);
-       // transform.eulerAngles = character.transform.eulerAngles;
     }
 }

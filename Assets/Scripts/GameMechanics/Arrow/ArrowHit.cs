@@ -8,6 +8,7 @@ public class ArrowHit : MonoBehaviour
     Animator animatorZombie;
     Rigidbody rb;
     AudioSource audioSource;
+    ZombieCombat zombieCombat;
 
     [SerializeField]
     private ParticleSystem bloodEffectPrefab;
@@ -29,7 +30,7 @@ public class ArrowHit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        #region Sticking Arrow
+        #region Arrow Sticking
         if (other.gameObject.tag != "ZombieAttackZone" && other.gameObject.tag != "ZombieArm")
         {
             hit = true;
@@ -37,6 +38,7 @@ public class ArrowHit : MonoBehaviour
 
             Destroy(transform.GetComponent<Collider>());
             Destroy(transform.GetComponent<TrailRenderer>());
+
             audioSource = GetComponent<AudioSource>();
             audioSource.Play();
         }
@@ -51,8 +53,33 @@ public class ArrowHit : MonoBehaviour
         #region Zombie Death 
         if (other.gameObject.tag == "Zombie")
         {
-            var bloodEffect = Instantiate(bloodEffectPrefab,transform.position,Quaternion.Euler(0, other.gameObject.transform.eulerAngles.y, 0), transform.parent = other.gameObject.transform);
+            zombieCombat = other.gameObject.transform.parent.gameObject.GetComponentInChildren<ZombieCombat>();
+            var bloodEffect = Instantiate(bloodEffectPrefab, transform.position, Quaternion.Euler(0, other.gameObject.transform.eulerAngles.y, 0), transform.parent = other.gameObject.transform);
             bloodEffect.Play();
+
+            zombieCombat.zombieHealth--;
+            if (zombieCombat.zombieHealth == 0)
+            {
+                KillZombie();
+            }
+
+        }
+        if(other.gameObject.tag == "ZombieWarrior")
+        {
+            zombieCombat = other.gameObject.transform.parent.gameObject.GetComponentInChildren<ZombieCombat>();
+            var bloodEffect = Instantiate(bloodEffectPrefab, transform.position, Quaternion.Euler(0, other.gameObject.transform.eulerAngles.y, 0), transform.parent = other.gameObject.transform);
+            bloodEffect.Play();
+
+            zombieCombat.zombieWarriorHealth--;
+            if (zombieCombat.zombieWarriorHealth == 0)
+            {
+                KillZombie();
+            }
+            
+        }
+        void KillZombie()
+        {
+
             GameObject enemy = other.gameObject.transform.parent.gameObject;
             bodyColliders = enemy.GetComponentInChildren<ZombieCombat>().bodyColliders;
 
@@ -61,14 +88,17 @@ public class ArrowHit : MonoBehaviour
                 Destroy(col);
             }
 
-            audioSource =enemy.gameObject.GetComponent<AudioSource>();
+            audioSource = enemy.gameObject.GetComponent<AudioSource>();
             audioSource.Play();
+
             animatorZombie = enemy.GetComponent<Animator>();
-            animatorZombie.SetBool("ZombieDeath", true); 
+            animatorZombie.SetBool("ZombieDeath", true);
             animatorZombie.applyRootMotion = true; // Added this line because zombies weren't grounded when death animation work.
+
             enemy.GetComponent<SplineFollower>().enabled = false;
         }
         #endregion
     }
+
 }
 

@@ -16,18 +16,8 @@ public class LevelEndControl : MonoBehaviour
     Animator animator;
 
     private bool changeCameraPos = false;
-    private bool _levelEnded = false;
-    public bool levelEnded
-    {
-        get
-        {
-            return _levelEnded;
-        }
-        set
-        {
-            _levelEnded = value;
-        }
-    }
+    private bool levelEnded = false;
+
     private void Start()
     {
         
@@ -37,20 +27,19 @@ public class LevelEndControl : MonoBehaviour
         if (changeCameraPos)
             CameraPosition();
     }
-    private void Update()
-    {
-        StartCoroutine(nextLevelButton());
-    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             nextLevel = GameObject.FindGameObjectWithTag("NextLevelButton");
-            _levelEnded = true;
+            levelEnded = true;
+
             Destroy(other.GetComponent<PlayerCombat>());
             Destroy(other.GetComponent<PlayerMovement>());
             Destroy(camera.GetComponent<CameraMovement>());
             Destroy(other.GetComponentInParent<SplineFollower>());
+
             GameObject.FindGameObjectWithTag("Bow").SetActive(false);
 
             changeCameraPos = true;
@@ -62,6 +51,8 @@ public class LevelEndControl : MonoBehaviour
             animator = other.GetComponent<Animator>();
             animator.applyRootMotion = true;
             animator.SetBool("Dance", true);
+
+            LevelManager.instance.levelWin = true;
             Destroy(this.GetComponent<Collider>());
         }
     }
@@ -80,16 +71,5 @@ public class LevelEndControl : MonoBehaviour
             camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, cameraPosRight.transform.rotation, 0.25f * Time.deltaTime);
         }
     }
-    IEnumerator nextLevelButton()
-    {
-        if (_levelEnded)
-        {
-            yield return new WaitForSeconds(2f);
-            nextLevel.GetComponent<CanvasGroup>().alpha += Time.deltaTime * 2;
-            if (nextLevel.GetComponent<CanvasGroup>().alpha >= 0.5f)
-            {
-                nextLevel.GetComponent<Button>().interactable = true;
-            }
-        }
-    }
+
 }

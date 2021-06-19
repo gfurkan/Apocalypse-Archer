@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4915665590132428590}
   m_Layer: 0
   m_Name: Hips
-  m_TagString: Zombie
+  m_TagString: ZombieWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 1398957909186663428}
   m_Layer: 0
   m_Name: ZombieWarrior
-  m_TagString: Zombie
+  m_TagString: ZombieWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -793,7 +793,7 @@ GameObject:
   - component: {fileID: 6730579040510238898}
   m_Layer: 0
   m_Name: LeftUpLeg
-  m_TagString: Zombie
+  m_TagString: ZombieWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

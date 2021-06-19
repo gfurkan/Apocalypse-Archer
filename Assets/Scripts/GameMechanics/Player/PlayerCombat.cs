@@ -8,11 +8,7 @@ using DG.Tweening;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField]
-    private GameObject arrowPrefab;
-    [SerializeField]
-    private GameObject handArrow;
-    [SerializeField]
-    private GameObject cameraObject;
+    private GameObject arrowPrefab, handArrow, cameraObject;
 
     [SerializeField]
     private Transform arrowPosition;
@@ -29,16 +25,9 @@ public class PlayerCombat : MonoBehaviour
     AudioSource audioSource;
 
     private int arrowCount = 1;
-    private bool aimandShoot = false, arrowHit = false, shootComplete=true;
     
+    private bool aimandShoot = false, arrowHit = false, shootComplete=true;
     private bool _characterDied = false,destroyScript=false;
-    public bool characterDied
-    {
-        get
-        {
-            return _characterDied;
-        }
-    }
 
     void Start()
     {
@@ -50,10 +39,6 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
-        if (_characterDied)
-        {
-            StartCoroutine(playAgainButton());
-        }
 
         if (shootComplete && !_characterDied)
         {
@@ -62,6 +47,7 @@ public class PlayerCombat : MonoBehaviour
 
                 aimandShoot = true;
                 animatorCharacter.SetBool("AimandShoot", aimandShoot);
+
                 follower.followSpeed /= 2; // Character speed decreased while shooting.
                 handArrow.SetActive(true);
                 shootComplete = false;
@@ -74,11 +60,14 @@ public class PlayerCombat : MonoBehaviour
     {
         audioSource.clip = clips[0];
         audioSource.Play();
+
         arrow = Instantiate(arrowPrefab, arrowPosition.transform.position, arrowPosition.transform.rotation,transform.root);
         arrow.transform.name = "Arrow " + arrowCount;
         arrowCount++;
+
         handArrow.SetActive(false);
         follower.followSpeed *= 2;
+
         ArrowMovement();
     }
 
@@ -87,6 +76,7 @@ public class PlayerCombat : MonoBehaviour
         rb = arrow.GetComponent<Rigidbody>();
         rb.velocity = arrow.transform.forward * arrowSpeed;
         rb.useGravity = true;
+
         aimandShoot = false;
         animatorCharacter.SetBool("AimandShoot", aimandShoot);
         shootComplete = true;
@@ -97,33 +87,22 @@ public class PlayerCombat : MonoBehaviour
     {
         if (other.gameObject.tag == "Zombie" || other.gameObject.tag == "ZombieArm" || other.gameObject.tag == "Obstacle")
         {
-            replay = GameObject.FindGameObjectWithTag("ReplayButton");
             _characterDied = true;
+
             audioSource.clip = clips[1];
             audioSource.Play();
+            
             animatorCharacter.SetBool("CharacterDeath", true);
-            transform.GetComponentInParent<SplineFollower>().enabled = false;
             animatorCharacter.applyRootMotion = true;
+
+            transform.GetComponentInParent<SplineFollower>().enabled = false;
             cameraObject.GetComponentInChildren<CameraMovement>().enabled = false;
 
-            if (destroyScript)
-            {
-                Destroy(this);
-            }
-            Destroy(transform.GetComponent<PlayerMovement>());
-        }
-    }
-    IEnumerator playAgainButton()
-    {
-        yield return new WaitForSeconds(0.5f);
-        replay.GetComponent<CanvasGroup>().alpha += Time.deltaTime * 2;
-
-        if (replay.GetComponent<CanvasGroup>().alpha >= 0.5f)
-        {
-           replay.GetComponent<Button>().interactable = true;
-           destroyScript = true;
+            LevelManager.instance.levelFail = true;
+            Destroy(this);
 
         }
     }
+ 
     #endregion
 }

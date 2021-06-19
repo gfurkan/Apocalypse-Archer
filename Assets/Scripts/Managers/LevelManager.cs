@@ -6,6 +6,24 @@ using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
+    #region Singleton
+    private static LevelManager _instance=null;
+    public static LevelManager instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+    private void OnEnable()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+    }
+    #endregion
+
     [SerializeField]
     private GameObject[] levels;
     [SerializeField]
@@ -13,53 +31,113 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private Text level;
 
-    LevelEndControl levelEndControl;
-    PlayerCombat playerCombat;
-
     GameObject currentLevel,finishedLevel;
-    int currentLevelIndex = 0;
+
+    private bool _levelFail = false, _levelWin = false;
+    #region Get Set
+
+    public bool levelFail
+    {
+        get
+        {
+            return _levelFail;
+        }
+        set
+        {
+            _levelFail = value;
+        }
+    }
+    public bool levelWin
+    {
+        get
+        {
+            return _levelWin;
+        }
+        set
+        {
+            _levelWin = value;
+        }
+    }
+    #endregion
+    private int currentLevelIndex = 0;
 
     void Start()
     {
         currentLevelIndex = PlayerPrefs.GetInt("LastLevel");
         currentLevel= Instantiate(levels[currentLevelIndex], Vector3.zero,Quaternion.identity);
         level.text = "LEVEL " + (currentLevelIndex + 1);
-        AccessScripts();
 
     }
+    void Update()
+    {
+        if (_levelFail)
+        {
+            PlayAgainButtonVisibility();
+        }
+        if (_levelWin)
+        {
+            NextLevelButtonVisibility();
+        }
+    }
+    #region Level Controller
 
     public void NextLevel() // Called in Editor.
     {
+        _levelWin = false;
         nextLevel.GetComponent<CanvasGroup>().alpha = 0;
         nextLevel.interactable = false;
         currentLevelIndex++;
-
+        
         if (currentLevelIndex > levels.Length - 1)
         {
             currentLevelIndex = 0;
         }
         LevelCreate();
-       
-    }
-    public void Replay() // Called in Editor.
-    {
-        replay.GetComponent<CanvasGroup>().alpha = 0;
-        replay.interactable = false;
-        LevelCreate();
-    }
-    void LevelCreate()
-    {
-        PlayerPrefs.SetInt("LastLevel", currentLevelIndex);
-        finishedLevel = currentLevel;
-        Destroy(finishedLevel);
-        currentLevel = Instantiate(levels[currentLevelIndex], Vector3.zero, Quaternion.identity);
-        level.text = "LEVEL " + (currentLevelIndex + 1);
-        AccessScripts();
+        
     }
 
-    void AccessScripts() //Access for objects when new level created.
+    public void Replay() // Called in Editor.
     {
-        levelEndControl = GameObject.FindGameObjectWithTag("LevelEnd").GetComponent<LevelEndControl>();
-        playerCombat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombat>();
+        _levelFail = false;
+        replay.GetComponent<CanvasGroup>().alpha = 0;
+        replay.interactable = false;
+
+        LevelCreate();
     }
+
+    void LevelCreate()
+    {
+
+        PlayerPrefs.SetInt("LastLevel", currentLevelIndex);
+        finishedLevel = currentLevel;
+
+        Destroy(finishedLevel);
+        currentLevel = Instantiate(levels[currentLevelIndex], Vector3.zero, Quaternion.identity);
+
+        level.text = "LEVEL " + (currentLevelIndex + 1);
+    }
+    #endregion
+
+    #region Button Visibility Controls
+
+    void PlayAgainButtonVisibility()
+    {
+        replay.GetComponent<CanvasGroup>().alpha += Time.deltaTime;
+
+        if (replay.GetComponent<CanvasGroup>().alpha >= 0.5f)
+        {
+            replay.GetComponent<Button>().interactable = true;
+
+        }
+    }
+   void NextLevelButtonVisibility()
+    {
+            nextLevel.GetComponent<CanvasGroup>().alpha += Time.deltaTime;
+
+            if (nextLevel.GetComponent<CanvasGroup>().alpha >= 0.5f)
+            {
+                nextLevel.GetComponent<Button>().interactable = true;
+            }
+    }
+    #endregion
 }
