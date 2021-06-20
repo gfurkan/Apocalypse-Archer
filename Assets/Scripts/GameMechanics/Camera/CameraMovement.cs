@@ -11,14 +11,17 @@ public class CameraMovement : MonoBehaviour
 
     Vector3 distance;
 
-    void Start()
+    void Awake()
     {
+        transform.position = new Vector3(character.transform.position.x, character.transform.position.y + 1, character.transform.position.z);
         distance = transform.position - character.transform.position;
+        
     }
 
     void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, character.transform.position + distance, 0.5f);
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles,character.transform.eulerAngles,1* Time.deltaTime*cameraRotationSpeed);
+        // transform.eulerAngles = Vector3.Lerp(transform.eulerAngles,character.transform.eulerAngles,1* Time.deltaTime*cameraRotationSpeed);
+        transform.eulerAngles = character.transform.eulerAngles;
     }
 }

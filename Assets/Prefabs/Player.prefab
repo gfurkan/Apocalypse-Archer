@@ -2101,7 +2101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPosition: {fileID: 7565249994090923197}
   rightPosition: {fileID: 2122013491421174531}
-  movementSpeed: 0
+  movementSpeed: 75
 --- !u!54 &1643810166137448225
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -28,7 +28,13 @@ public class PlayerCombat : MonoBehaviour
     
     private bool aimandShoot = false, arrowHit = false, shootComplete=true;
     private bool _characterDied = false,destroyScript=false;
-
+    public bool characterDied
+    {
+        get
+        {
+            return _characterDied;
+        }
+    }
     void Start()
     {
         
