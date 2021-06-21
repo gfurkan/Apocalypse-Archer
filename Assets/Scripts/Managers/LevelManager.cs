@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
             return _instance;
         }
     }
-    private void OnEnable()
+    private void Awake()
     {
         if (_instance == null)
         {

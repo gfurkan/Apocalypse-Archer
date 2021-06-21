@@ -12,9 +12,18 @@ public class TutorialManager : MonoBehaviour
     private Image handImage;
     [SerializeField]
     private PlayerCombat playerCombat;
+    [SerializeField]
+    private PlayerMovement playerMovement;
+    [SerializeField]
+    private ZombieCombat zombieCombat;
 
     bool slideTutorial = false, shootTutorial = false, stopTutorial = false;
 
+    private void Awake()
+    {
+        playerCombat.enabled = false;
+        playerMovement.enabled = false;
+    }
     void Update()
     {
         if (slideTutorial)
@@ -30,7 +39,7 @@ public class TutorialManager : MonoBehaviour
         {
             CharacterDead(); // Stops tutorials when character is dead.
         }
-        if (stopTutorial)
+        if (stopTutorial || zombieCombat.zombieHealth==0)
         {
             StopTutorial();
         }
@@ -44,10 +53,12 @@ public class TutorialManager : MonoBehaviour
             if (shootZone)
             {
                 shootTutorial = true;
+                playerCombat.enabled = true;
             }
             if (slideZone)
             {
                 slideTutorial = true;
+                playerMovement.enabled = true;
             }
             Time.timeScale = 0.5f;
         }
