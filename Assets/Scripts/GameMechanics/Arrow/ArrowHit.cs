@@ -31,7 +31,7 @@ public class ArrowHit : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         #region Arrow Sticking
-        if (other.gameObject.tag != "ZombieAttackZone" && other.gameObject.tag != "ZombieArm")
+        if (other.gameObject.tag != "ZombieAttackZone" && other.gameObject.tag != "ZombieArm" && other.gameObject.tag != "LevelEnd")
         {
             hit = true;
             rb.isKinematic = true;

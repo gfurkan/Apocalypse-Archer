@@ -18,7 +18,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private AudioClip[] clips;
 
-    GameObject replay;
+    PlayerMovement playerMovement;
     Animator animatorCharacter;
     SplineFollower follower;
     Rigidbody rb;
@@ -41,6 +41,7 @@ public class PlayerCombat : MonoBehaviour
         animatorCharacter = GetComponent<Animator>();
         follower = transform.GetComponentInParent<SplineFollower>();
         audioSource = GetComponent<AudioSource>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
@@ -48,7 +49,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (shootComplete && !_characterDied)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (playerMovement.click)
             {
 
                 aimandShoot = true;
@@ -57,6 +58,7 @@ public class PlayerCombat : MonoBehaviour
                 follower.followSpeed /= 2; // Character speed decreased while shooting.
                 handArrow.SetActive(true);
                 shootComplete = false;
+
             }
         }
 
@@ -73,7 +75,7 @@ public class PlayerCombat : MonoBehaviour
 
         handArrow.SetActive(false);
         follower.followSpeed *= 2;
-
+        playerMovement.click = false;
         ArrowMovement();
     }
 
