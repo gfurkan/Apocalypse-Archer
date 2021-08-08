@@ -2,19 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Dreamteck.Splines;
+using UnityEditor;
 
+/*[CustomEditor(typeof(ZombieMovement))]
+public class DropDownList : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        ZombieMovement script = (ZombieMovement)target;
+        GUIContent arrayLabel = new GUIContent("Movement Type");
+        int tempmovInd = script.movementIndex;
+        script.movementIndex = EditorGUILayout.Popup(arrayLabel, script.movementIndex, script.movementTypes);   ***DropDownList***
+        if (tempmovInd != script.movementIndex)
+        {
+            EditorUtility.SetDirty((ZombieMovement)target);
+            tempmovInd = script.movementIndex;
+        }
+    }
 
+}*/
 public class ZombieMovement : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("Ýf true zombie walks, if false zombie runs.")] private bool walkOrRun=false;
-    [SerializeField]
-    [Tooltip("Ýf true start position of zombie is left, if false right.")] private bool zombiePosition = false;
-
+    private ZombieProperties zombieProperties;
     [SerializeField]
     private float zombieWalkSpeed = 0, zombieRunSpeed = 0;
-    
-    
+  /*  [HideInInspector]
+    public string[] movementTypes = new string[] { "Walk", "Run" };  ***DropDownList***
+    [HideInInspector]
+    public int movementIndex;*/
+
     Animator animatorZombie;
     SplineFollower splineFollower;
 
@@ -22,13 +40,15 @@ public class ZombieMovement : MonoBehaviour
     {
         animatorZombie = GetComponent<Animator>();
         splineFollower = GetComponent<SplineFollower>();
+        splineFollower.motion.applyPositionY = false;
+
         ZombieFirstPosition();
 
-        if (walkOrRun)
+        if (zombieProperties.walkOrRun)
         {
             ZombieWalk();
         }
-        else
+        if(!zombieProperties.walkOrRun)
         {
             ZombieRun();
         }
@@ -48,7 +68,7 @@ public class ZombieMovement : MonoBehaviour
     }
     void ZombieFirstPosition()
     {
-        if (zombiePosition)
+        if (zombieProperties.zombiePosition)
         {
             splineFollower.offset = new Vector2(-2.5f, 0);
         }
@@ -57,5 +77,4 @@ public class ZombieMovement : MonoBehaviour
             splineFollower.offset = new Vector2(2.7f, 0);
         }
     }
-
 }

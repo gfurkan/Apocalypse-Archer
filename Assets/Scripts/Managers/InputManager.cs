@@ -11,17 +11,18 @@ public class InputManager : MonoBehaviour
     {
         get
         {
-         /*   if (_Instance == null)
-            {
-                _Instance = new GameObject("InputManager").AddComponent<InputManager>();
-            }*/
             return _Instance;
         }
     }
     #endregion
+
+    private bool _drag = false, _click = false, _draggedLeft = false, _draggedRight = false;
+    private Vector3 _touchPos, _touchPosNext, _direction;
+
     #region Get Set
-    private bool _drag = false, _click = false,_draggedLeft=false,_draggedRight=false;
-    public bool drag
+
+    LevelManager levelManager;
+    public bool drag 
     {
         get
         {
@@ -31,22 +32,6 @@ public class InputManager : MonoBehaviour
         {
             _drag = value;
         }
-    }
-    public bool draggedLeft
-    {
-        get
-        {
-            return _draggedLeft;
-        }
-
-    }
-    public bool draggedRight
-    {
-        get
-        {
-            return _draggedRight;
-        }
-
     }
     public bool click
     {
@@ -59,28 +44,48 @@ public class InputManager : MonoBehaviour
             _click = value;
         }
     }
-    #endregion
-    private Vector3 touchPos, touchPosNext, direction;
+    public Vector3 touchPos
+    {
+        get
+        {
+            return _touchPos;
+        }
+        set
+        {
+            _touchPos = value;
+        }
+    }
+    public bool draggedLeft => _draggedLeft;
+    public bool draggedRight => _draggedRight;
 
+    #endregion
+    private void Awake()
+    {
+        _Instance = transform.GetComponent<InputManager>();
+    }
+    private void Start()
+    {
+        levelManager = LevelManager.instance;
+    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             _drag = false;
-            touchPos = Input.mousePosition;
+            _touchPos = Input.mousePosition;
         }
         if (Input.GetMouseButton(0))
         {
-            touchPosNext= Input.mousePosition;
-            direction = touchPosNext - touchPos;
-            if (direction.x > 25)
+            _touchPosNext= Input.mousePosition;
+            _direction = _touchPosNext - _touchPos;
+            if (_direction.x > 25)
             {
                 _drag = true;
                // touchPos = touchPosNext;
                 _draggedLeft = false;
                 _draggedRight = true;
             }
-            if (direction.x < -25)
+            if (_direction.x < -25)
             {
                 _drag = true;
                // touchPos = touchPosNext;

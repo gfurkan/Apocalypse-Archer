@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class LevelManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private Text level;
 
+    InputManager inputManager;
     GameObject currentLevel,finishedLevel;
 
     private bool _levelFail = false, _levelWin = false;
@@ -63,6 +65,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        inputManager = InputManager.Instance;
         currentLevelIndex = PlayerPrefs.GetInt("LastLevel");
         currentLevel= Instantiate(levels[currentLevelIndex], Vector3.zero,Quaternion.identity);
         level.text = "LEVEL " + (currentLevelIndex + 1);
@@ -101,7 +104,7 @@ public class LevelManager : MonoBehaviour
         _levelFail = false;
         replay.GetComponent<CanvasGroup>().alpha = 0;
         replay.interactable = false;
-
+        
         LevelCreate();
     }
 
@@ -127,7 +130,6 @@ public class LevelManager : MonoBehaviour
         if (replay.GetComponent<CanvasGroup>().alpha >= 0.5f)
         {
             replay.GetComponent<Button>().interactable = true;
-
         }
     }
    void NextLevelButtonVisibility()

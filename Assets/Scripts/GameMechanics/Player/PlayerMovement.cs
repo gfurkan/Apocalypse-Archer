@@ -10,144 +10,47 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeed = 0;
 
     private bool _moveLeft = false, _moveRight = false;
-    private Vector3 touchPos, touchPosNext, direction;
+    public bool moveLeft => _moveLeft;
+    public bool moveRight => _moveRight;
 
-    private bool _drag = false, _click = false, _draggedLeft = false, _draggedRight = false;
-
-    #region Get Set
-
-    public bool drag
-    {
-        get
-        {
-            return _drag;
-        }
-        set
-        {
-            _drag = value;
-        }
-    }
-    public bool draggedLeft
-    {
-        get
-        {
-            return _draggedLeft;
-        }
-
-    }
-    public bool draggedRight
-    {
-        get
-        {
-            return _draggedRight;
-        }
-
-    }
-    public bool click
-    {
-        get
-        {
-            return _click;
-        }
-        set
-        {
-            _click = value;
-        }
-    }
-    public bool moveLeft
-    {
-        get
-        {
-            return _moveLeft;
-        }
-    }
-    public bool moveRight
-    {
-        get
-        {
-            return _moveRight;
-        }
-    }
-    #endregion
-
-
-
+    InputManager inputManagar;
     Rigidbody rb;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        inputManagar = InputManager.Instance;
     }
 
     void Update()
     {
-        TouchControls();
-        MovePlayer();
+        ChangePosition();
 
         if (_moveLeft)
         {
-            MoveLeft();
+            MoveCharacter(leftPosition);
         }
         if (_moveRight)
         {
-            MoveRight();
+            MoveCharacter(rightPosition);
         }
     }
-    void MovePlayer()
+    void ChangePosition()
     {
-            if (_draggedLeft)
+            if (inputManagar.draggedLeft)
             {
                 _moveLeft = true;
                 _moveRight = false;
             }
-            if (_draggedRight)
+            if (inputManagar.draggedRight)
             {
                 _moveLeft = false;
                 _moveRight = true;
             }
-        
-
     }
 
-    void MoveLeft()
+    void MoveCharacter(Transform characterTransform)
     {
-        rb.transform.localPosition = Vector3.MoveTowards(transform.localPosition,new Vector3(leftPosition.localPosition.x,transform.localPosition.y,transform.localPosition.z), 0.1f* Time.deltaTime*movementSpeed);
-    }
-    void MoveRight()
-    {
-        rb.transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(rightPosition.localPosition.x, transform.localPosition.y, transform.localPosition.z), 0.1f*Time.deltaTime*movementSpeed);
-    }
-    void TouchControls()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            _drag = false;
-            touchPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            touchPosNext = Input.mousePosition;
-            direction = touchPosNext - touchPos;
-            if (direction.x > 25)
-            {
-                _drag = true;
-                // touchPos = touchPosNext;
-                _draggedLeft = false;
-                _draggedRight = true;
-            }
-            if (direction.x < -25)
-            {
-                _drag = true;
-                // touchPos = touchPosNext;
-                _draggedRight = false;
-                _draggedLeft = true;
-            }
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (!_drag)
-            {
-                _click = true;
-            }
-        }
+        rb.transform.localPosition = Vector3.MoveTowards(transform.localPosition,new Vector3(characterTransform.localPosition.x,transform.localPosition.y,transform.localPosition.z), 0.1f* Time.deltaTime*movementSpeed);
     }
 }

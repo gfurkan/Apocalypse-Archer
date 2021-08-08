@@ -23,21 +23,17 @@ public class PlayerCombat : MonoBehaviour
     SplineFollower follower;
     Rigidbody rb;
     AudioSource audioSource;
+    InputManager inputManager;
 
     private int arrowCount = 1;
     
     private bool aimandShoot = false, arrowHit = false, shootComplete=true;
     private bool _characterDied = false,destroyScript=false;
-    public bool characterDied
-    {
-        get
-        {
-            return _characterDied;
-        }
-    }
+    public bool characterDied => _characterDied;
+
     void Start()
     {
-        
+        inputManager = InputManager.Instance;
         animatorCharacter = GetComponent<Animator>();
         follower = transform.GetComponentInParent<SplineFollower>();
         audioSource = GetComponent<AudioSource>();
@@ -47,9 +43,9 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
 
-        if (shootComplete && !_characterDied)
+        if (shootComplete && !_characterDied) // Shoot when shooting animation done and character isn't dead.
         {
-            if (playerMovement.click)
+            if (inputManager.click)
             {
 
                 aimandShoot = true;
@@ -63,7 +59,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
     }
-    #region Arrow
+    #region Arrow Creation
     void CreateArrow() // Called in character animation events.
     {
         audioSource.clip = clips[0];
@@ -75,7 +71,7 @@ public class PlayerCombat : MonoBehaviour
 
         handArrow.SetActive(false);
         follower.followSpeed *= 2;
-        playerMovement.click = false;
+        inputManager.click = false;
         ArrowMovement();
     }
 

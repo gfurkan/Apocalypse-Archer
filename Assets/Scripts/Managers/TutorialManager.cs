@@ -49,6 +49,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            handImage.enabled = true;
             stopTutorial = false;
             if (shootZone)
             {
@@ -59,6 +60,7 @@ public class TutorialManager : MonoBehaviour
             {
                 slideTutorial = true;
                 playerMovement.enabled = true;
+                playerCombat.enabled = true;
             }
             Time.timeScale = 0.5f;
         }
@@ -69,6 +71,7 @@ public class TutorialManager : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             stopTutorial = true;
+            handImage.enabled = false;
         }
     }
     void ShootTutorial()
@@ -77,32 +80,32 @@ public class TutorialManager : MonoBehaviour
 
         if (handImage.GetComponent<CanvasGroup>().alpha == 0)
         {
-            handImage.GetComponent<CanvasGroup>().DOFade(1, 0.25f);
+            handImage.GetComponent<CanvasGroup>().DOFade(1, 0.1f);
         }
         if (handImage.GetComponent<CanvasGroup>().alpha == 1)
         {
-            handImage.GetComponent<CanvasGroup>().DOFade(0, 0.25f);
+            handImage.GetComponent<CanvasGroup>().DOFade(0, 0.1f);
         }
     }
     void SlideTutorial()
     {
         if (handImage.GetComponent<CanvasGroup>().alpha <= 0)
         {
-            handImage.GetComponent<CanvasGroup>().DOFade(1, 0.75f);
+            handImage.GetComponent<CanvasGroup>().DOFade(1, 0.5f);
         }
         if (handImage.GetComponent<CanvasGroup>().alpha >= 1)
         {
-            handImage.GetComponent<CanvasGroup>().DOFade(0, 0.75f);
+            handImage.GetComponent<CanvasGroup>().DOFade(0, 0.5f);
         }
 
 
         if (handImage.GetComponent<RectTransform>().anchoredPosition.x == 220)
         {
-            handImage.GetComponent<RectTransform>().DOAnchorPosX(-220, 0.75f);
+            handImage.GetComponent<RectTransform>().DOAnchorPosX(-220, 0.5f);
         }
         if (handImage.GetComponent<RectTransform>().anchoredPosition.x==-220)
         {
-            handImage.GetComponent<RectTransform>().DOAnchorPosX(220, 0.75f);
+            handImage.GetComponent<RectTransform>().DOAnchorPosX(220, 0.5f);
         }
         
     }

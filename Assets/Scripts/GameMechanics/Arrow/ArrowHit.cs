@@ -4,8 +4,6 @@ using UnityEngine;
 using Dreamteck.Splines;
 public class ArrowHit : MonoBehaviour
 {
-    Collider[] bodyColliders;
-    Animator animatorZombie;
     Rigidbody rb;
     AudioSource audioSource;
     ZombieCombat zombieCombat;
@@ -60,7 +58,7 @@ public class ArrowHit : MonoBehaviour
             zombieCombat.zombieHealth--;
             if (zombieCombat.zombieHealth == 0)
             {
-                KillZombie();
+                KillZombie(other.gameObject);
             }
 
         }
@@ -73,15 +71,14 @@ public class ArrowHit : MonoBehaviour
             zombieCombat.zombieWarriorHealth--;
             if (zombieCombat.zombieWarriorHealth == 0)
             {
-                KillZombie();
+                KillZombie(other.gameObject);
             }
             
         }
-        void KillZombie()
+        void KillZombie(GameObject enemy)
         {
-
-            GameObject enemy = other.gameObject.transform.parent.gameObject;
-            bodyColliders = enemy.GetComponentInChildren<ZombieCombat>().bodyColliders;
+            enemy = other.gameObject.transform.parent.gameObject;
+            Collider[] bodyColliders = enemy.GetComponentInChildren<ZombieCombat>().bodyColliders;
 
             foreach (Collider col in bodyColliders)
             {
@@ -91,9 +88,9 @@ public class ArrowHit : MonoBehaviour
             audioSource = enemy.gameObject.GetComponent<AudioSource>();
             audioSource.Play();
 
+            Animator animatorZombie;
             animatorZombie = enemy.GetComponent<Animator>();
             animatorZombie.SetBool("ZombieDeath", true);
-            animatorZombie.applyRootMotion = true; // Added this line because zombies weren't grounded when death animation work.
 
             enemy.GetComponent<SplineFollower>().enabled = false;
         }

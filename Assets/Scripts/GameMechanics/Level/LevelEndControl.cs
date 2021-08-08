@@ -18,10 +18,6 @@ public class LevelEndControl : MonoBehaviour
     private bool changeCameraPos = false;
     private bool levelEnded = false;
 
-    private void Start()
-    {
-        
-    }
     private void LateUpdate()
     {
         if (changeCameraPos)

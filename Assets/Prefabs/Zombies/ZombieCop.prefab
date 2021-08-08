@@ -1407,8 +1407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85f5e18b8f41b7d468483446b73c39ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkOrRun: 0
-  zombiePosition: 0
+  zombieProperties: {fileID: 0}
   zombieWalkSpeed: 0.5
   zombieRunSpeed: 1
 --- !u!95 &672630241077810179
